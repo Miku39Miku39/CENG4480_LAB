@@ -2,7 +2,7 @@ from sense_hat import SenseHat
 from time import sleep
 from maze_lib import *
 
-MAP_NO = 2
+MAP_NO = 1
 
 
 def move_marble(pitch, roll, x, y, W):
@@ -49,9 +49,16 @@ if __name__ == '__main__':
         # Question 1. Read sensor to get orientation
         ########################################
         # Fill the following two lines
-        pitch = 
-        roll = 
+
+        # sense.get_orientation() returns a dictionary 
+        # with the keys 'pitch', 'roll' and 'yaw'
+        # For this maze game, we only need to use pitch and roll, 
+        # values are obtained using the keys 'pitch' and 'roll'
         
+        pitch = sense.get_orientation()['pitch']
+        roll = sense.get_orientation()['roll']
+        
+        # print(sense.get_orientation())
         # Move marble
         x,y = move_marble(pitch, roll, x, y, W)
         # Check whether you arrive destination
@@ -66,6 +73,13 @@ if __name__ == '__main__':
         # Question 2. Display the new map
         ########################################
         # Your Answer 2 starts here !!!
+        
+        # sense.set_pixels() allows the assigning of each pixel on the LED display, 
+        # since the function accepts a list of 64 smaller lists of RGB values, 
+        # we can then refer to the provided maze orientation from `maze_lib` 
+        # and iterate over the whole array of coloured pixels.
+        
+        sense.set_pixels([pixel for row in maze for pixel in row])
         
         
         sleep(0.05)
