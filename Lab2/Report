@@ -1,0 +1,37 @@
+CENG4480 Lab2 Group 11 
+
+Tong King Laam	(1155194266) 
+
+Lee Shing Hei		(1155183712) 
+
+
+Q1: 
+
+`matmul()` 
+
+`matmul_ikj()` 
+
+`matmul_AT()` 
+
+`matmul_BT()` 
+
+We can see that the runtime of matmul() and matmul_BT() are roughly the same, and the that of matmul_ikj() and matmul_AT() are roughly the same, but the overall runtime ranking is: matmul_ikj() > matmul_AT() > matmul() > matmul_BT() 
+
+For matmul_ikj(), it has the poorest spacial locality, since for both the matrices, it is visiting column-wise, which means visiting a new column for each new slot in the resulting matrix, this makes its runtime the slowest. 
+
+For matmul_AT(), it uses the transpose of matrix A to carry out the multiplication, this creates some memory overhead and additional computation is needed to create matrix A transpose. And the visiting of the matrix A transpose is still column-wise, creating a lot of cache misses. 
+
+For matmul(), it is the definition of matrix multiplcation, although matrix B is still being visited column-wise, but it has no memory overhead and additional computation as matmul_AT(), so it has a shorter runtime than matmul_AT(). 
+
+For matmul_BT(), it is the faster method because after transposing matrix B, the visiting of data for both matrices becomes row-wise, which has a much better spacial locality. It is clear that this can compensate the memory overhead and additional computation, and is the most efficient way for multiplication. 
+
+
+Q2:	For question 2, we decided to implement loop unrolling and tiling to optimize matrix multiplication and obtained great success. The two newly added functions are `matmul_unrolled` and `matmul_tiling`. 
+
+For loop unrolling, it is done with the factor of 4, this can reduce the number of k-increments, compares, and branches by around 4 times, this can shrink the overhead for each computed C[i][j]. Since the additions and multiplications are done as independent instructions, this allows the compiler to perform these operations parallelly, and the number of writing of C[i][j] is only once after the addition, avoiding repeated memory reads/writes for C[i][j] compared to it being in the inner-most loop of the traditional ways. By implementing loop unrolling, the matrix multiplication is faster than traditional methods even without the combination of transposing matrix B before the multiplication. 
+
+`matmul_unrolled()` 
+
+For tiling, by separating the original matrices into smaller sub-matrices, it can reduce the cache capacity and conflict misses. This creates a big difference from the traditional ijk or ikj loops where there are a lot of cache misses. Also, the function performs 32 integer operations for every byte loaded, this is a much better operation per byte ratio than the simple loops. It also encourages data reusing in exchange of computation, which achieves much better improvement from the standard matrix multiplication method, saving more than 40000 µs from `matmul_BT`. 
+
+`matmul_tiling()` 
