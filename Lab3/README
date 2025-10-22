@@ -1,0 +1,8 @@
+TODOs:
+- Completing the Maze game
+  - Implementing the logic about pitch and roll
+  - Linking up to the default Maze orientation
+- Completing the Snake game
+  - Setting the colour of pixels of the snake
+  - Generating food pixel `gen_food()`
+  - Controlling snake with joystick
