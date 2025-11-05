@@ -42,6 +42,15 @@ def gen_food(body):
     ########################################
     # Answer 2 start Here !!!
 
+    # Inside the while loop, we will generate a random position of food 
+    # until one valid position where it is not inside any pixels of the body.
+    # Once a valid food position is found, it is returned.
+
+    while True:
+        food_pos = [random.randint(0,7),random.randint(0,7)]
+        if food_pos not in body:
+            return food_pos
+
     
 if __name__ == "__main__": 
     head_pos= [4,4]
@@ -90,6 +99,13 @@ if __name__ == "__main__":
         # Question 1. Use set_pixel function in sense to display the snake head, the head color should be red
         ########################################
         # Answer 1 start Here !!!
+
+        # Since only one pixel is needed to be set as the snake head,
+        # we can use the set_pixel() function to set an individual pixel.
+        # The first 2 arguments will be the x and y coordinates from head_pos,
+        # and the RGB value is red as defined above. 
+
+        sense.set_pixel(head_pos[0],head_pos[1],red)
         
         for b in body:
             sense.set_pixel(b[0],b[1],green)
@@ -111,7 +127,20 @@ if __name__ == "__main__":
                 ########################################
                 # Answer 3 start Here !!!
         
-
+                # The direction of the joystick will be checked using the elif statements,
+                # the corresponding direction variable will be updated.
+                # When the joystick is not being pressed, the direction is unchaged.
+        
+                elif event.direction == 'up':
+                    direction='up'
+                elif event.direction == 'down':
+                    direction='down'
+                elif event.direction == 'left':
+                    direction='left'
+                elif event.direction == 'right':
+                    direction='right'
+                else:
+                    direction=direction
 
                 break
 
